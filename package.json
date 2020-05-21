@@ -1,0 +1,19 @@
+{
+  "name": "tour-guide",
+  "version": "1.0.0",
+  "description": "Application for tourism Used technology Nodejs, Express, MongoDB,  CSS, HTML",
+  "main": "app.js",
+  "scripts": {
+    "test": " "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/linuxrafiq/tour-guide.git"
+  },
+  "author": "rafiq",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/linuxrafiq/tour-guide/issues"
+  },
+  "homepage": "https://github.com/linuxrafiq/tour-guide#readme"
+}
