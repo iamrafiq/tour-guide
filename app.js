@@ -3,10 +3,24 @@ const express = require('express');
 var bodyParser = require('body-parser')
 
 const app = express();
+// creating our own middleware function
+app.use((req, res, next)=>{
+   // console.log(req);
+    console.log("hello from the middleware");
+    next(); // next is function provided by express, if I do not call next middleware pipline will broke.
+});
 
+app.use((req, res, next)=>{
+    req.requestTime = new Date().toISOString();
+    next();
+});
+
+//this is a middleware function
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 })); 
+
+//this is a middleware function
 app.use( bodyParser.json());       // to support JSON-encoded bodies
 
 
@@ -17,6 +31,7 @@ const getAllTours = (req, res)=>{
     res.status(200).json({
         status:'success',
         results:tours.length,
+        requestedAt:req.requestTime,
         data:{
             tours:tours
         }
