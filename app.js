@@ -1,9 +1,14 @@
 const fs = require('fs');
 const express = require('express');
-var bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
+
 
 const app = express();
-// creating our own middleware function
+//using morgan to logging middleware
+//options: combined , common , dev, short ,tiny
+app.use(morgan('short'));
+//creating our own middleware function
 app.use((req, res, next)=>{
    // console.log(req);
     console.log("hello from the middleware");
