@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const tourRouter = require('./route/tourRouter');
 const userRouter = require('./route/userRouter');
@@ -34,8 +33,4 @@ app.use(express.json());
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 
-//starting server
-const port = 3000;
-app.listen(port, () => {
-  console.log(`app running on port ${port}...`);
-});
+module.exports = app;
