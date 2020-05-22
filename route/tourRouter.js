@@ -2,7 +2,12 @@ const express = require('express');
 const tourController = require('./../controller/tourController')
 
 const router = express.Router();
-
+/**PARAM middleware,
+ * param-middleware only runs 
+ * when there is certain types of parameter, in our case we have id parametar so 
+ * we can add a param middleware
+ */
+router.param('id', tourController.checkID);
 /**
  * app.get('/api/v1/tours', getAllTours);
  * app.post('/api/v1/tours', createTour);
