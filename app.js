@@ -18,7 +18,7 @@ app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
 });
-
+/*
 //this is a middleware function
 app.use(
   bodyParser.urlencoded({
@@ -28,7 +28,8 @@ app.use(
 );
 
 //this is a middleware function
-app.use(bodyParser.json()); // to support JSON-encoded bodies
+app.use(bodyParser.json()); // to support JSON-encoded bodies*/
+app.use(express.json());
 
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
