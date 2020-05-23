@@ -14,6 +14,16 @@ const tours = JSON.parse(
       }
       next();
   }
+  exports.checkBody = (req, res, next)=>{
+      console.log(req);
+    if (!req.body.name || !req.body.price){
+        return res.status(400).json({
+            status:'fail',
+            message:'Missing name or price'
+        })
+    }
+    next();
+  }
   exports.getAllTours = (req, res) => {
     res.status(200).json({
       status: 'success',
@@ -36,7 +46,6 @@ const tours = JSON.parse(
     });
   };
   exports.createTour = (req, res) => {
-    console.log(req.body);
     const newId = tours[tours.length - 1].id + 1;
     const newTour = Object.assign({ id: newId }, req.body);
     tours.push(newTour);

@@ -4,7 +4,7 @@
   "description": "Application for tourism Used technology Nodejs, Express, MongoDB,  CSS, HTML",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon server.js "
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",

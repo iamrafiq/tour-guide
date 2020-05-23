@@ -13,8 +13,10 @@ router.param('id', tourController.checkID);
  * app.post('/api/v1/tours', createTour);
  * in one call below
  */
-router.route('/').get(tourController.getAllTours).post(tourController.createTour);
-
+router.route('/')
+.get(tourController.getAllTours)
+.post(tourController.checkBody, tourController.createTour);
+//tourController.createTour
 /**
  * app.get('/api/v1/tours/:id', getTour);
  * app.patch('/api/v1/tours/:id', updateTour);

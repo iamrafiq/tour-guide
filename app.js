@@ -29,6 +29,7 @@ app.use(
 //this is a middleware function
 app.use(bodyParser.json()); // to support JSON-encoded bodies*/
 app.use(express.json());
+app.use(express.static(`${__dirname}/public`));
 
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
