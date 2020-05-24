@@ -1,4 +1,4 @@
-
+/* eslint-disable*/
 exports.checkID = (req, res, next, val) =>{
    // console.log(`user id is:${val}`);
     if (req.params.id * 1 > tours.length) {

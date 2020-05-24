@@ -1,5 +1,5 @@
 const fs = require('fs');
-
+/* eslint-disable*/
 const tours = JSON.parse(
     fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
   );
