@@ -3,9 +3,13 @@ const morgan = require('morgan');
 const tourRouter = require('./route/tourRouter');
 const userRouter = require('./route/userRouter');
 const app = express();
-//using morgan to logging middleware
-//options: combined , common , dev, short ,tiny
-app.use(morgan('short'));  // this morgan function call next();
+if(process.env.NODE_ENV==='development'){
+  //using morgan to logging middleware
+  //options: combined , common , dev, short ,tiny
+  app.use(morgan('short'));  // this morgan function call next();
+}
+//app.use(morgan('short'));  // this morgan function call next();
+
 //creating our own middleware function
 app.use((req, res, next) => {   
   // console.log(req);
