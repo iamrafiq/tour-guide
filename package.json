@@ -4,7 +4,9 @@
   "description": "Application for tourism Used technology Nodejs, Express, MongoDB,  CSS, HTML",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "play": "nodemon server.js"
+
   },
   "repository": {
     "type": "git",
@@ -13,7 +15,7 @@
   "author": "rafiq",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/linuxrafiq/tour-guide/issues"
+    "url  ": "https://github.com/linuxrafiq/tour-guide/issues"
   },
   "homepage": "https://github.com/linuxrafiq/tour-guide#readme",
   "dependencies": {
