@@ -33,12 +33,11 @@ mongoose
     useCreateIndex: true,
     useFindAndModify: false,
   })
-  .then((con) => console.log('DB connection successful'));
+  .then((con) => {
+    console.log(`DB connection successful ${con.path}`);
+  });
 
 //starting server
-
-//console.log(app.get('env'));
-//console.log(process.env)
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`app running on port ${port}...`);

@@ -1,21 +1,22 @@
 const express = require('express');
-const tourController = require('./../controller/tourController')
+const tourController = require('./../controller/tourController');
 
 const router = express.Router();
 /**PARAM middleware,
- * param-middleware only runs 
- * when there is certain types of parameter, in our case we have id parametar so 
+ * param-middleware only runs
+ * when there is certain types of parameter, in our case we have id parametar so
  * we can add a param middleware
  */
-router.param('id', tourController.checkID);
+// router.param('id', tourController.checkID);
 /**
  * app.get('/api/v1/tours', getAllTours);
  * app.post('/api/v1/tours', createTour);
  * in one call below
  */
-router.route('/')
-.get(tourController.getAllTours)
-.post(tourController.checkBody, tourController.createTour);
+router
+  .route('/')
+  .get(tourController.getAllTours)
+  .post(tourController.checkBody, tourController.createTour);
 //tourController.createTour
 /**
  * app.get('/api/v1/tours/:id', getTour);
