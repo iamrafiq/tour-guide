@@ -3,15 +3,15 @@ const morgan = require('morgan');
 const tourRouter = require('./route/tourRouter');
 const userRouter = require('./route/userRouter');
 const app = express();
-if(process.env.NODE_ENV==='development'){
+if (process.env.NODE_ENV === 'development') {
   //using morgan to logging middleware
   //options: combined , common , dev, short ,tiny
-  app.use(morgan('short'));  // this morgan function call next();
+  app.use(morgan('short')); // this morgan function call next();
 }
 //app.use(morgan('short'));  // this morgan function call next();
 
 //creating our own middleware function
-app.use((req, res, next) => {   
+app.use((req, res, next) => {
   // console.log(req);
   console.log('hello from the middleware');
   next(); // next is function provided by express, if I do not call next middleware pipline will broke.
