@@ -16,8 +16,9 @@ const app = require('./app');
 
 const DB = process.env.DATABASE.replace(
   '<PASSWORD>',
-  process.env.DATABASE_PASSWORD
+  process.env.DATABASE_PASSWORD_ATLAS
 );
+console.log(DB);
 mongoose
   .connect(DB, {
     usedNewUrlParser: true,
