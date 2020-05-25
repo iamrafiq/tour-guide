@@ -18,17 +18,22 @@ const DB = process.env.DATABASE.replace(
   '<PASSWORD>',
   process.env.DATABASE_PASSWORD_ATLAS
 );
-console.log(DB);
+
+//local db connection
+/*mongoose
+  .connect(process.env.DATABASE_LOCAL, {
+    usedNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+  })
+  .then((con) => console.log('DB connection successful'));*/
 mongoose
   .connect(DB, {
     usedNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
   })
-  .then((con) => {
-    console.log(con.connection);
-    console.log('DB connection successful');
-  });
+  .then((con) => console.log('DB connection successful'));
 
 //starting server
 
