@@ -13,6 +13,7 @@ const router = express.Router();
  * app.post('/api/v1/tours', createTour);
  * in one call below
  */
+router.route('/tour-stats').get(tourController.getTourStats);
 router
   .route('/top-5-cheap')
   .get(tourController.aliasTopTour, tourController.getAllTours);
