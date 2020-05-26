@@ -3,15 +3,29 @@ const Tour = require('./../models/tourModel');
 exports.getAllTours = async (req, res) => {
   try {
     //BUILDING QUERY
-    const queryObj = { ...req.query }; //Shallow copy of req.query object
+    //1. Filtering
+    const queryObj = { ...req.query }; //Shallow/clone copy of req.query object by desctruings
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
     excludedFields.forEach((el) => delete queryObj[el]);
     console.log(req.query, queryObj);
+
+    //2. Advance filtaring
+    //api call: 127.0.0.1:3000/api/v1/tours?difficulty=easy&duration[gte]=5&price[lt]=1000
+    //input { difficulty: 'easy', duration: { gte: '5' } }
+    let queryString = JSON.stringify(queryObj);
+    queryString = queryString.replace(
+      /\b(gte|gt|lte|lt)\b/g,
+      (match) => `$${match}`
+    );
+    queryString = JSON.parse(queryString)
+    console.log(queryString);
+    //out put: { difficulty: 'easy', duration: { '$gte': '5' } }
+    //{ difficulty: 'easy', duration: { $gte: '5' } }
     //const tours = await Tour.find({ duration:5, difficulty:'easy'});
     //const tours = await Tour.find().where('duration').equals(5).where('difficulty').equals('easy');
     //const tours = await Tour.find();
 
-    const query = Tour.find(queryObj);
+    const query = Tour.find(queryString);
 
     //EXECUTING QUERY
     const tours = await query;
