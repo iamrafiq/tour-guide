@@ -17,16 +17,23 @@ exports.getAllTours = async (req, res) => {
       /\b(gte|gt|lte|lt)\b/g,
       (match) => `$${match}`
     );
-    queryString = JSON.parse(queryString)
+    queryString = JSON.parse(queryString);
     console.log(queryString);
-    //out put: { difficulty: 'easy', duration: { '$gte': '5' } }
-    //{ difficulty: 'easy', duration: { $gte: '5' } }
+
+    //output: { difficulty: 'easy', duration: { '$gte': '5' } }
     //const tours = await Tour.find({ duration:5, difficulty:'easy'});
     //const tours = await Tour.find().where('duration').equals(5).where('difficulty').equals('easy');
     //const tours = await Tour.find();
 
-    const query = Tour.find(queryString);
+    let query = Tour.find(queryString);
 
+    //3.Sorting
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(',').join(' ');
+      query = query.sort(sortBy);
+    }else{
+      query.sort('-createdAt');
+    }
     //EXECUTING QUERY
     const tours = await query;
 
