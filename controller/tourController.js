@@ -31,9 +31,18 @@ exports.getAllTours = async (req, res) => {
     if (req.query.sort) {
       const sortBy = req.query.sort.split(',').join(' ');
       query = query.sort(sortBy);
-    }else{
+    } else {
       query.sort('-createdAt');
     }
+    if (req.query.fields) {
+      const fields = req.query.fields.split(',').join(' ');
+      query = query.select(fields);
+    } else {
+      //comment -__V, here minus(-) means excluding __V field, so this field will not send to client
+      query = query.select('-__v');
+    }
+    //4. Field limiting
+
     //EXECUTING QUERY
     const tours = await query;
 
