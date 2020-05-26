@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const tourRouter = require('./route/tourRouter');
 const userRouter = require('./route/userRouter');
+
 const app = express();
 if (process.env.NODE_ENV === 'development') {
   //using morgan to logging middleware
