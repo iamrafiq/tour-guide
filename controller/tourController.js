@@ -13,7 +13,14 @@ exports.getAllTours = async (req, res) => {
 
     //finally query become to execute
     //query.find().sort().select().skip().limit();
-
+    /***
+     * new APIFeatures(Tour.find(), req.query), we are just creating a query object
+     * not executing it, after adding query option like filter, sort, limitFileds, paginate
+     * then we execute it by awaiting
+     * await features.query;
+     * But before executing this query, mongoose will execute
+     * pre find Query middleware in the tourModel.js, example discarding all secretTour
+     */
     const features = new APIFeatures(Tour.find(), req.query)
       .filter()
       .sort()

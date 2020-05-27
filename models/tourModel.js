@@ -56,6 +56,10 @@ const tourSchema = new mongoose.Schema(
       select: false,
     },
     startDates: [Date],
+    secretTour: {
+      type: Boolean,
+      default: false,
+    },
   }
   // {
   //   toJSON: { virtuals: true },
@@ -78,20 +82,70 @@ tourSchema.set('toObject', { virtuals: true });
 tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
 });
+/**
+ * Document middleware: runs before .save() and .create(), will not tiggre for .insertMany()
+ * https://mongoosejs.com/docs/middleware.html
+ */
 
-//Document middleware: runs before .save() and .create(), will not tiggre for .insertMany()
 tourSchema.pre('save', function (next) {
+  //here this represent document , because it's document middleware
   this.slug = slugify(this.name, { lower: true });
   next();
 });
 tourSchema.pre('save', function (next) {
+  //here this represent document , because it's document middleware
   console.log('Will save documents');
   next();
 });
 tourSchema.post('save', function (doc, next) {
-  console.log(doc);
+  //here this represent document , because it's document middleware
+  // console.log(doc);
+  console.log('document post middleware');
   next();
 });
+
+//Query Middlewre
+/*
+tourSchema.pre('find', function (next) {
+  //here this represent query object , because it's query middleware
+  this.find({ secretTour: { $ne: true } });
+  next();
+});
+
+tourSchema.pre('findOne', function (next) {
+  //this middleware will work for query findById/ findOne, ref: tourContorller getTour
+  //here this represent query object , because it's query middleware
+  this.find({ secretTour: { $ne: true } });
+  next();
+});*/
+/**with regular expresson for all start with find
+ * findById
+ * findOne
+ * findByIdAndDelete
+ * findByIdAndRemove
+ * ...
+ * All query string start with find, sing reqular expresson
+ * https://mongoosejs.com/docs/middleware.html
+ */
+tourSchema.pre(/^find/, function (next) {
+  //here this represent query object , because it's query middleware
+  this.find({ secretTour: { $ne: true } });
+  //Let's find how much time takes this query by using both pre and post query middleware
+  //assinging a new property to this query object;
+  this.start = Date.now();
+  next();
+});
+/**
+ * post query middleware will run after the query executed
+ */
+tourSchema.post(/^find/, function (docs, next) {
+  //here this represent query object , because it's query middleware
+  //query allready finished at this point
+  console.log(`Query took ${Date.now() - this.start} milis`);
+  // console.log(docs);
+  next();
+});
+
 const Tour = mongoose.model('Tour', tourSchema);
 /**
  * new toure can be creatable from Tour model
