@@ -146,6 +146,24 @@ tourSchema.post(/^find/, function (docs, next) {
   next();
 });
 
+//Aggregation Middleware
+tourSchema.pre('aggregate', function (next) {
+  //this represent current aggregate object that is processing
+  //unshift() is javascript function which add elements at the begening of the array
+
+  // console.log(this.pipeline());
+  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+  //console.log(this.pipeline());
+
+  next();
+});
+tourSchema.post('aggregate', function (next) {
+  //this represent current aggregate object that is processing
+  //unshift() is javascript function which add elements at the begening of the array
+  console.log('Aggregation post hook/middleware');
+  next();
+});
+
 const Tour = mongoose.model('Tour', tourSchema);
 /**
  * new toure can be creatable from Tour model
