@@ -13,12 +13,14 @@ exports.getAllTours = async (req, res) => {
 
     //finally query become to execute
     //query.find().sort().select().skip().limit();
+
     const features = new APIFeatures(Tour.find(), req.query)
       .filter()
       .sort()
       .limitFields()
       .paginate();
     //EXECUTING QUERY
+
     const tours = await features.query;
 
     //SEND RESPONCE
