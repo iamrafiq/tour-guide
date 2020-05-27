@@ -76,6 +76,11 @@ tourSchema.set('toObject', { virtuals: true });
 tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
 });
+
+//Document middleware: runs before .save() and .create(), will not tiggre for .insertMany()
+tourSchema.pre('save', function () {
+  console.log(this);
+});
 const Tour = mongoose.model('Tour', tourSchema);
 /**
  * new toure can be creatable from Tour model
