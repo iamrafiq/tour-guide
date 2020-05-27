@@ -84,6 +84,14 @@ tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
+tourSchema.pre('save', function (next) {
+  console.log('Will save documents');
+  next();
+});
+tourSchema.post('save', function (doc, next) {
+  console.log(doc);
+  next();
+});
 const Tour = mongoose.model('Tour', tourSchema);
 /**
  * new toure can be creatable from Tour model
