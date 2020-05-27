@@ -14,6 +14,8 @@ const router = express.Router();
  * in one call below
  */
 router.route('/tour-stats').get(tourController.getTourStats);
+router.route('/monthly-plan/:year').get(tourController.getMonnthlyPlan);
+
 router
   .route('/top-5-cheap')
   .get(tourController.aliasTopTour, tourController.getAllTours);

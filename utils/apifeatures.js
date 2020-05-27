@@ -57,6 +57,7 @@ class APIFeatures {
     //for page2:query = query.skip(10).limit(10);
     //for page3:query = query.skip(20).limit(10);
     //and so on ...
+    //  page = this.queryString.page * 1 means page will conting int value of this.queryString.page
     const page = this.queryString.page * 1 || 1;
     const limit = this.queryString.limit * 1 || 100;
     const skip = (page - 1) * limit;
