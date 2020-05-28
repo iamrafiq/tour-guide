@@ -1,5 +1,8 @@
 const express = require('express');
 const morgan = require('morgan');
+
+const AppError = require('./utils/apperror');
+const globalErrorHandler = require('./controller/errorController');
 const tourRouter = require('./route/tourRouter');
 const userRouter = require('./route/userRouter');
 
@@ -38,14 +41,10 @@ app.use('/api/v1/users', userRouter);
  * app.all(): means all verbs/methods such as get, post, patch, update, delete
  * app.all(*): * means any route that dose not matched with previous declaration yet.
  
+*/
 app.all('*', (req, res, next) => {
-  res.status(404).json({
-    status: 'fail',
-    message: `Can't find ${req.originalUrl} on this server`,
-  });
-  next();
-});*/
-
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+});
 /**Error Middleware
  * This is a special middleware called error middleware
  * Diffrence with other: all other middleware has three argument req,res and next
@@ -56,12 +55,5 @@ app.all('*', (req, res, next) => {
  *
  */
 
-app.use((err, req, res, next) => {
-  err.statusCode = err.statusCode || 500;
-  err.status = err.status || 'error';
-  res.status(err.statusCode).json({
-    status: err.status,
-    message: err.message,
-  });
-});
+app.use(globalErrorHandler);
 module.exports = app;
