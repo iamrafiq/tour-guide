@@ -11,13 +11,6 @@ if (process.env.NODE_ENV === 'development') {
 }
 //app.use(morgan('short'));  // this morgan function call next();
 
-//creating our own middleware function
-app.use((req, res, next) => {
-  // console.log(req);
-  console.log('hello from the middleware');
-  next(); // next is function provided by express, if I do not call next middleware pipline will broke.
-});
-
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
@@ -39,4 +32,36 @@ app.use(express.static(`${__dirname}/public`));
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 
+/** Route Exception Handeling (after declaration of all routes)
+ * wrong route: route that did not exist
+ * wrong id/query object: route exist but wrong id or query object supplied
+ * app.all(): means all verbs/methods such as get, post, patch, update, delete
+ * app.all(*): * means any route that dose not matched with previous declaration yet.
+ 
+app.all('*', (req, res, next) => {
+  res.status(404).json({
+    status: 'fail',
+    message: `Can't find ${req.originalUrl} on this server`,
+  });
+  next();
+});*/
+
+/**Error Middleware
+ * This is a special middleware called error middleware
+ * Diffrence with other: all other middleware has three argument req,res and next
+ * But error middleware has for arguments starts with err, then req, res and next
+ * if we pass anythings (object or variable) from any middleware form any point of app using next funciton,
+ * decleard error middleware will be called
+ * example: next(error); from anywhere of the app
+ *
+ */
+
+app.use((err, req, res, next) => {
+  err.statusCode = err.statusCode || 500;
+  err.status = err.status || 'error';
+  res.status(err.statusCode).json({
+    status: err.status,
+    message: err.message,
+  });
+});
 module.exports = app;
