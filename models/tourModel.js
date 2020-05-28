@@ -182,7 +182,7 @@ tourSchema.post('aggregate', function (next) {
   //this represent current aggregate object that is processing
   //unshift() is javascript function which add elements at the begening of the array
   console.log('Aggregation post hook/middleware');
-  next();
+  //next();
 });
 
 const Tour = mongoose.model('Tour', tourSchema);
