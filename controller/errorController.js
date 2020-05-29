@@ -4,7 +4,7 @@ const handleCastErrorDB = (err) => {
   const message = `Invalide ${err.path}: ${err.value}`;
   return new AppError(message, 400);
 };
-const handleDuplicateField = (err) => {
+const handleDuplicateFieldDB = (err) => {
   /**regular expression for text between quots
    * Mongodb Error: "errmsg": "E11000 duplicate key error collection: tour-guide.tours index: name_1 dup key: { name: \"The Forest Hiker\" }",
    */
@@ -12,7 +12,12 @@ const handleDuplicateField = (err) => {
   const message = `Duplicate field value:${value[0]}. Please use another value`;
   return new AppError(message, 400);
 };
+const handleValidationErrorDB = (err) => {
+  const errors = Object.values(err.errors).map((el) => el.message);
 
+  const message = `Invalid input data: ${errors.join('. ')}`;
+  return new AppError(message, 400);
+};
 const sendErrorDev = (err, res) => {
   res.status(err.statusCode).json({
     status: err.status,
@@ -43,27 +48,33 @@ module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
   console.log('Error Controller', process.env.NODE_ENV);
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'development') {
     sendErrorDev(err, res);
-  } else if (process.env.NODE_ENV === 'development') {
+  } else if (process.env.NODE_ENV === 'production') {
     console.log('Error Controller Inside', process.env.NODE_ENV);
 
     let error = { ...err }; // object cloning
     if (error.name === 'CastError') {
-      /**mongoose operational error:
+      /**MongoDB operational error:
        * invalid Id,
-       * validation error(ratings avarage( > 6 and  <1) or difficulty (!medium, !hight, !easy) )
        */
       console.log('Error Controller Inside', process.env.NODE_ENV);
 
       error = handleCastErrorDB(error);
     }
-    if (error.code == 11000) {
+    if (error.code === 11000) {
       /**
-       * Mongoose operational error
+       * MongoDB operational error
        * duplicate key error collection
        */
-      error = handleDuplicateField(error);
+      error = handleDuplicateFieldDB(error);
+    }
+    if (error.name === 'ValidationError') {
+      /**
+       * Mongoose operational error
+       * validation error(ratings avarage( > 6 and  <1) or difficulty (!medium, !hight, !easy) )
+       */
+      error = handleValidationErrorDB(error);
     }
     sendErrorProd(error, res);
   }
