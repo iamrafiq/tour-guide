@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const slugify = require('slugify');
 const validator = require('validator');
+const bcrypt = require('bcryptjs');
 
 const userSchema = mongoose.Schema({
   name: {
@@ -22,14 +22,14 @@ const userSchema = mongoose.Schema({
   password: {
     type: String,
     required: [true, 'Please provide a password.'],
-    minlength:8,
+    minlength: 8,
   },
   passwordConfirm: {
     type: String,
     required: [true, 'Password confirm can not be empty.'],
     validate: {
       /** This only works on SAVE,
-       * when update user use one create save not other method 
+       * when update user use one create save not other method
        *  such as findByIdAndUpdate, find one and update
        */
       validator: function (v) {
@@ -42,14 +42,23 @@ const userSchema = mongoose.Schema({
 /**pre('save') middleware
  * In between getting and saving the data in database: just right before saving data in databasse.
  */
-userSchema.pre('save',function(next){
+userSchema.pre('save', async function (next) {
   /**Encrypt password, only for new user or  updating password of the user
-   * if isModified('password')===true then retun and call the next() middleware
+   * if !isModified('password') means if password has not been modified then retun and call the next() middleware
    * else hash / encrypt the passowrd by  Bcrypt to avoid  Brute-force attack
+   *
+   * We will save encrypted password, so no need to save confirmPassword in database
+   * but  passwordConasyncfirm is a field in model, to tell database that we will not store it is to set the confirmPassword = undefine
+   * but passwordConfirm is requierd-ok which means that it should be given by user to model
+   * it dose not mean it's required to actually be persisted
    */
-  if(this.isModified('password')){
+  if (!this.isModified('password')) {
     return next();
   }
+  this.password = await bcrypt.hash(this.password, 12);
+  console.log(this.password);
+  this.passwordConfirm = undefined;
+  next();
 });
 const User = mongoose.model('User', userSchema);
 module.exports = User;
