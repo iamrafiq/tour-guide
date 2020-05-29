@@ -29,6 +29,7 @@
     "validator": "^13.0.0"
   },
   "devDependencies": {
+    "@types/mongoose": "^5.7.21",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-prettier": "^6.11.0",
