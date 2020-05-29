@@ -4,6 +4,13 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
+process.on('uncaughtException', (err) => {
+  //must be declare before : const app = require('./app');
+  console.log('form server.js UNCAUGHT REJECTION 🔥', 'shutting down....');
+  console.log(err);
+  process.exit(1); // 0-for success, 1-for uncaught exception
+});
+
 dotenv.config({ path: './config.env' });
 /**
  * require the app must be after dotenv and dotenvconfig
@@ -39,19 +46,24 @@ mongoose
 
 //starting server
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`app running on port ${port}...`);
 });
 
-// const puppeteer = require('puppeteer-core');
-// (async () => {
-//   const browser = await puppeteer.launch({
-//     executablePath: '/usr/bin/chromium-browser',
-//     headless: false,
-//   });
-//   const page = await browser.newPage();
-//   await page.goto('https://google.com');
-//   await page.screenshot({ path: 'example.png' });
+/**UnhandledPromiseRejection Error:
+ * Database can not stublish connection: such as wrong password
+ * Any time, form any where of the code promise can get rejected
+ * 
+ * Each time there is an unhandled rejection somewhere in our applicaion, then the process
+ * object will emit an object called unhandled rejection, so we can subscribe to the event just 
+ * like :process.on('unhandleRejection', err=>{})
 
-//   await browser.close();
-// })();
+ */
+process.on('unhandledRejection', (err) => {
+  console.log(err.name, err.message);
+  console.log('form server.js UNHANDLED REJECTION 🔥', 'shutting down....');
+  server.close(() => {
+    // first close the server, then exit application(optional)
+    process.exit(1); // 0-for success, 1-for uncaught exception
+  });
+});
