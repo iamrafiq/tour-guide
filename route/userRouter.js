@@ -1,7 +1,9 @@
 const express = require('express');
 const userController = require('./../controller/userController');
+const authController = require('./../controller/authController');
 
 const router = express.Router();
+router.post('/signup', authController.signup);
 /**PARAM middleware,
  * param-middleware only runs
  * when there is certain types of parameter, in our case we have id parametar so
