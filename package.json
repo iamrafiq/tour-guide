@@ -28,7 +28,7 @@
     "morgan": "^1.10.0",
     "slugify": "^1.4.0",
     "uuid": "^8.1.0",
-    "validator": "^13.0.0"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@types/mongoose": "^5.7.21",
